@@ -1,0 +1,134 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>출석인정원 V31</title>
+
+<style>
+body{
+    font-family:'Malgun Gothic',Arial,sans-serif;
+    background:#eef2f7;
+    margin:0;
+    color:#222;
+}
+.wrap{
+    max-width:1100px;
+    margin:30px auto;
+    background:white;
+    padding:28px;
+    border-radius:14px;
+    box-shadow:0 4px 18px rgba(0,0,0,.12);
+}
+.top{
+    background:#173b7a;
+    color:white;
+    padding:18px 24px;
+    border-radius:12px;
+    margin-bottom:22px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+}
+.top h2{
+    margin:0;
+    font-size:24px;
+}
+.nav a{
+    color:white;
+    text-decoration:none;
+    margin-left:12px;
+    font-weight:bold;
+}
+.btn,button{
+    background:#173b7a;
+    color:white;
+    border:0;
+    border-radius:8px;
+    padding:10px 16px;
+    cursor:pointer;
+    text-decoration:none;
+    display:inline-block;
+}
+.btn:hover,button:hover{
+    background:#0f2b59;
+}
+.btn.light{
+    background:#666;
+}
+.danger{
+    background:#c92323;
+}
+input,textarea,select{
+    width:100%;
+    padding:11px;
+    margin:6px 0 14px;
+    border:1px solid #ccc;
+    border-radius:8px;
+    box-sizing:border-box;
+}
+table{
+    width:100%;
+    border-collapse:collapse;
+    margin-top:18px;
+    background:white;
+}
+th{
+    background:#173b7a;
+    color:white;
+    padding:12px;
+}
+td{
+    border-bottom:1px solid #ddd;
+    padding:11px;
+    text-align:center;
+}
+tr:hover{
+    background:#f4f7ff;
+}
+.flash{
+    background:#fff3cd;
+    padding:12px;
+    border:1px solid #ffe69c;
+    border-radius:8px;
+    margin-bottom:14px;
+}
+.grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:16px;
+}
+.small{
+    font-size:13px;
+    color:#666;
+}
+</style>
+</head>
+
+<body>
+<div class="wrap">
+
+<div class="top">
+    <h2>출석인정원 V31</h2>
+
+    <div class="nav">
+        <a href="/">홈</a>
+        <a href="/change_password">비밀번호 변경</a>
+        <a href="/logout">로그아웃</a>
+    </div>
+</div>
+
+{% with messages = get_flashed_messages() %}
+    {% if messages %}
+        {% for m in messages %}
+            <div class="flash">{{m}}</div>
+        {% endfor %}
+    {% endif %}
+{% endwith %}
+
+{% block content %}
+{% endblock %}
+
+</div>
+</body>
+</html>

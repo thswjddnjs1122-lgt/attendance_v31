@@ -1,0 +1,7 @@
+{% extends 'base.html' %}{% block content %}
+<h3>{{user.student_name}} 학생 페이지</h3>
+<p><a class="btn" href="/apply">출석인정 신청하기</a></p>
+<table><tr><th>번호</th><th>결석기간</th><th>사유</th><th>상태</th><th>출력</th></tr>
+{% for a in apps %}<tr><td>{{a.id}}</td><td>{{a.absence_period}}</td><td>{{a.reason}}</td><td>{{a.status}}{% if a.reject_reason %}<br><span class="small">{{a.reject_reason}}</span>{% endif %}</td><td><a href="/print/{{a.id}}" target="_blank">양식보기</a></td></tr>{% endfor %}
+</table>
+{% endblock %}

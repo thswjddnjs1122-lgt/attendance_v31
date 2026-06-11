@@ -1,0 +1,31 @@
+{% extends 'base.html' %}{% block content %}
+<h3>출석인정 신청</h3>
+<form method="post" enctype="multipart/form-data" onsubmit="return saveSigns()">
+<div class="grid"><div><label>학과</label><input name="department" value="{{user.department or ''}}"></div><div><label>학년</label><input name="grade" value="{{user.grade or ''}}"></div></div>
+<div class="grid"><div><label>성명</label><input name="student_name" value="{{user.student_name or ''}}"></div><div><label>학번</label><input name="student_id" value="{{user.student_id or ''}}"></div></div>
+<label>생년월일</label><input name="birth" value="{{user.birth or ''}}">
+<label>학기</label><input name="semester" value="{{default_semester}}" placeholder="예: 2026-1학기" required>
+<p class="small">※ 학기별 신청 가능 횟수는 최대 3회입니다.</p>
+<label>결석기간</label><input name="absence_period" placeholder="예: 2026.06.01 ~ 2026.06.03" required>
+<label>결석사유</label><textarea name="reason" rows="4" required></textarea>
+<label>증빙서류 종류</label>
+<select name="evidence_type" required>
+    <option value="진단서">진단서</option><option value="입퇴원확인서">입퇴원확인서</option><option value="수술확인서">수술확인서</option><option value="병역판정검사">병역판정검사</option><option value="예비군">예비군</option><option value="경조사">경조사</option><option value="기타">기타</option>
+</select>
+<label>진단내용 / 병명</label><input name="diagnosis_text" placeholder="예: 급성장염, 독감, 입원치료 등">
+<p class="small">※ 결석사유와 진단내용이 다르면 관리자 화면에 경고가 표시됩니다.</p>
+<label>작성일</label><input name="apply_date" value="{{today}}">
+<label>보호자 성명</label><input name="parent_name" placeholder="보호자 성명을 입력하세요" required>
+<label>증빙서류 첨부</label><input type="file" name="attachment">
+<p class="small">※ 이미지 파일은 OCR 검사를 시도합니다. PDF/HWP는 관리자 수동 확인으로 표시됩니다.</p>
+<div class="grid"><div><label>학생 전자서명</label><canvas id="studentCanvas" width="420" height="150" style="border:1px solid #999;width:100%;height:150px"></canvas><button type="button" onclick="clearCanvas('studentCanvas')">지우기</button></div><div><label>보호자 전자서명</label><canvas id="parentCanvas" width="420" height="150" style="border:1px solid #999;width:100%;height:150px"></canvas><button type="button" onclick="clearCanvas('parentCanvas')">지우기</button></div></div>
+<input type="hidden" name="student_signature" id="student_signature"><input type="hidden" name="parent_signature" id="parent_signature">
+<br><button type="submit">신청 저장</button>
+</form>
+<script>
+function setup(id){const c=document.getElementById(id),ctx=c.getContext('2d');let draw=false;function pos(e){const r=c.getBoundingClientRect();const t=e.touches?e.touches[0]:e;return {x:(t.clientX-r.left)*(c.width/r.width),y:(t.clientY-r.top)*(c.height/r.height)}}function start(e){draw=true;ctx.beginPath();let p=pos(e);ctx.moveTo(p.x,p.y);e.preventDefault()}function move(e){if(!draw)return;let p=pos(e);ctx.lineWidth=2;ctx.lineCap='round';ctx.lineTo(p.x,p.y);ctx.stroke();e.preventDefault()}function end(){draw=false}c.addEventListener('mousedown',start);c.addEventListener('mousemove',move);window.addEventListener('mouseup',end);c.addEventListener('touchstart',start);c.addEventListener('touchmove',move);c.addEventListener('touchend',end)}
+function clearCanvas(id){const c=document.getElementById(id);c.getContext('2d').clearRect(0,0,c.width,c.height)}
+function saveSigns(){document.getElementById('student_signature').value=document.getElementById('studentCanvas').toDataURL('image/png');document.getElementById('parent_signature').value=document.getElementById('parentCanvas').toDataURL('image/png');return true}
+setup('studentCanvas');setup('parentCanvas');
+</script>
+{% endblock %}

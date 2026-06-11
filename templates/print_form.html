@@ -1,0 +1,416 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<title>출석인정 신청원</title>
+<style>
+*{box-sizing:border-box}
+
+html,body{
+    margin:0;
+    padding:0;
+    background:#ececec;
+    color:#111;
+    font-family:'Batang','BatangChe','Malgun Gothic',serif;
+    font-size:13px;
+}
+
+.no-print{
+    width:210mm;
+    margin:10px auto;
+    text-align:center;
+    font-family:'Malgun Gothic',sans-serif;
+}
+
+.no-print button{
+    padding:9px 18px;
+    border:0;
+    border-radius:6px;
+    background:#222;
+    color:#fff;
+    cursor:pointer;
+}
+
+.no-print a{
+    display:inline-block;
+    margin-left:8px;
+    padding:9px 18px;
+    border-radius:6px;
+    background:#666;
+    color:#fff;
+    text-decoration:none;
+}
+
+.page{
+    width:210mm;
+    height:297mm;
+    margin:0 auto;
+    background:#fff;
+    position:relative;
+    overflow:hidden;
+}
+
+.inner{
+    position:absolute;
+    left:30mm;
+    right:30mm;
+    top:42mm;
+    bottom:18mm;
+}
+
+.form-no{
+    position:absolute;
+    left:0;
+    top:0;
+    font-size:13px;
+    letter-spacing:.2px;
+}
+
+.title{
+    position:absolute;
+    top:17mm;
+    left:0;
+    right:0;
+    text-align:center;
+    font-size:22px;
+    font-weight:bold;
+    letter-spacing:4px;
+    font-family:'Batang','BatangChe',serif;
+}
+
+.route-left{
+    position:absolute;
+    left:0;
+    top:38mm;
+    width:40mm;
+    height:21mm;
+    border-collapse:collapse;
+    table-layout:fixed;
+}
+
+.route-right{
+    position:absolute;
+    right:0;
+    top:38mm;
+    width:59mm;
+    height:21mm;
+    border-collapse:collapse;
+    table-layout:fixed;
+}
+
+.route-left td,
+.route-right td{
+    border:1.3px solid #000;
+    text-align:center;
+    vertical-align:middle;
+    padding:0;
+    font-size:14px;
+    height:7.2mm;
+}
+
+.route-left .vertical{
+    width:7mm;
+    line-height:7mm;
+    letter-spacing:1px;
+}
+
+.route-left .blank,
+.route-right .blank{
+    height:14mm;
+}
+
+.route-left .blank td,
+.route-right .blank td{
+    height:14mm;
+}
+
+.info{
+    position:absolute;
+    left:14mm;
+    right:14mm;
+    top:80mm;
+    font-size:14px;
+    line-height:7mm;
+    letter-spacing:5px;
+}
+
+.info-row{
+    height:9mm;
+    white-space:nowrap;
+}
+
+.value{
+    letter-spacing:0;
+    font-family:'Batang','BatangChe',serif;
+    font-size:13px;
+}
+
+.left-label{
+    display:inline-block;
+    width:24mm;
+}
+
+.colon{
+    letter-spacing:0;
+    margin-left:-3mm;
+    margin-right:5mm;
+}
+
+.right-block{
+    position:absolute;
+    left:86mm;
+    letter-spacing:5px;
+}
+
+.right-block .colon{
+    margin-left:-3mm;
+    margin-right:5mm;
+}
+
+.statement{
+    position:absolute;
+    left:0;
+    right:0;
+    top:118mm;
+    font-size:13px;
+    line-height:7mm;
+    letter-spacing:1.1px;
+    text-align:left;
+}
+
+.absence{
+    position:absolute;
+    left:14mm;
+    top:148mm;
+    font-size:14px;
+    letter-spacing:3px;
+}
+
+.absence .value{
+    letter-spacing:0;
+    margin-left:6mm;
+    font-size:13px;
+}
+
+.reason{
+    position:absolute;
+    left:14mm;
+    top:165mm;
+    font-size:14px;
+    letter-spacing:3px;
+}
+
+.reason .value{
+    letter-spacing:0;
+    margin-left:6mm;
+    display:inline-block;
+    max-width:95mm;
+    vertical-align:top;
+    line-height:7mm;
+    white-space:pre-wrap;
+    font-size:13px;
+}
+
+.date{
+    position:absolute;
+    top:176mm;
+    left:0;
+    right:0;
+    text-align:center;
+    font-size:14px;
+    letter-spacing:3px;
+}
+
+.signs{
+    position:absolute;
+    left:96mm;
+    top:188mm;
+    width:58mm;
+    font-size:14px;
+    letter-spacing:5px;
+    line-height:22mm;
+}
+
+.sig-line{
+    white-space:nowrap;
+    position:relative;
+    height:22mm;
+}
+
+.sig-name{
+    letter-spacing:0;
+    display:inline-block;
+    min-width:18mm;
+}
+
+.sig-img{
+    position:absolute;
+    left:48mm;
+    top:4mm;
+    width:18mm;
+    height:12mm;
+    object-fit:contain;
+}
+
+.stamp{
+    letter-spacing:0;
+    margin-left:4mm;
+}
+
+.attach{
+    position:absolute;
+    left:0;
+    bottom:30mm;
+    font-size:14px;
+    letter-spacing:2px;
+}
+
+.page-num{
+    position:absolute;
+    bottom:9mm;
+    left:0;
+    right:0;
+    text-align:center;
+    font-size:14px;
+    letter-spacing:4px;
+}
+
+@page{
+    size:A4;
+    margin:0;
+}
+
+@media print{
+    html,body{
+        background:#fff;
+    }
+
+    .no-print{
+        display:none;
+    }
+
+    .page{
+        margin:0;
+        box-shadow:none;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<div class="no-print">
+    <button onclick="window.print()">인쇄 / PDF 저장</button>
+    <a href="/static/form_template.pdf" target="_blank">원본 PDF 확인</a>
+</div>
+
+<div class="page">
+    <div class="inner">
+
+        <div class="form-no">(별지서식 제10-1호)</div>
+
+        <div class="title">출석인정 신청원</div>
+
+        <table class="route-left">
+            <tr>
+                <td class="vertical" rowspan="2">경<br>유</td>
+                <td>지도교수</td>
+                <td>학과장</td>
+            </tr>
+            <tr class="blank">
+                <td></td>
+                <td></td>
+            </tr>
+        </table>
+
+        <table class="route-right">
+            <tr>
+                <td>담 당</td>
+                <td>팀 장</td>
+                <td>처 장</td>
+            </tr>
+            <tr class="blank">
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+        </table>
+
+        <div class="info">
+            <div class="info-row">
+                <span class="left-label">학&nbsp;&nbsp;&nbsp;&nbsp;과</span>
+                <span class="colon">:</span>
+                <span class="value">{{app.department}}</span>
+            </div>
+
+            <div class="info-row">
+                <span class="left-label">학&nbsp;&nbsp;&nbsp;&nbsp;년</span>
+                <span class="colon">:</span>
+                <span class="value">{{app.grade}}</span>
+
+                <span class="right-block">
+                    성&nbsp;&nbsp;&nbsp;&nbsp;명
+                    <span class="colon">:</span>
+                    <span class="value">{{app.student_name}}</span>
+                </span>
+            </div>
+
+            <div class="info-row">
+                <span class="left-label">학&nbsp;&nbsp;&nbsp;&nbsp;번</span>
+                <span class="colon">:</span>
+                <span class="value">{{app.student_id}}</span>
+
+                <span class="right-block">
+                    생년월일
+                    <span class="colon">:</span>
+                    <span class="value">{{app.birth}}</span>
+                </span>
+            </div>
+        </div>
+
+        <div class="statement">
+            본인은 아래와 같은 사유로 부득이 결석하였기에 증빙서류를 첨부하여 제출하오니 조치하여
+            주시기 바랍니다. 
+        </div>
+
+        <div class="absence">
+            결석기간 <span class="colon">:</span>
+            <span class="value">{{app.absence_period}}</span>
+        </div>
+
+        <div class="reason">
+            결석사유 <span class="colon">:</span>
+            <span class="value">{{app.reason}}</span>
+        </div>
+
+        <div class="date">{{app.apply_date}}</div>
+
+        <div class="signs">
+            <div class="sig-line">
+                본&nbsp;&nbsp;인 <span class="colon">:</span>
+                <span class="sig-name">{{app.student_name or ''}}</span>
+                {% if app.student_signature %}
+                <img class="sig-img" src="/static/signatures/{{app.student_signature}}">
+                {% endif %}
+                <span class="stamp">(인)</span>
+            </div>
+
+            <div class="sig-line">
+                보 호 자 <span class="colon">:</span>
+                <span class="sig-name">{{app.parent_name or ''}}</span>
+                {% if app.parent_signature %}
+                <img class="sig-img" src="/static/signatures/{{app.parent_signature}}">
+                {% endif %}
+                <span class="stamp">(인)</span>
+            </div>
+        </div>
+
+        <div class="attach">첨부 : 증빙서류 1부</div>
+
+        <div class="page-num">- 1 -</div>
+
+    </div>
+</div>
+
+</body>
+</html>
